@@ -57,10 +57,7 @@ echo "Node initial..."
 # Run a command in the first session's first window
 tmux send-keys -t $SESSION_NAME:0.0 "./subspace-node   --chain gemini-3f   --execution wasm   --blocks-pruning 256   --state-pruning archive   --no-private-ipv4   --validator   --name '$node_name'" C-m
 
-echo "Wait 5 Minute to node init..."
-sleep 300
-echo "Farmer initial..."
-sleep 2
+echo "Wait to node init..."
 
 if [ "$farmer_wipe" == "y" ] || [ "$farmer_wipe" == "Y" ]; then
     tmux send-keys -t $SESSION_NAME:0.1 "./subspace-farmer wipe ./sublog/" C-m
