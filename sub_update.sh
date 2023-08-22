@@ -31,13 +31,25 @@ farmer_wipe=${farmer_wipe:-"n"}
 read -p "Node wipe? (y/n) (default: n): " node_wipe
 node_wipe=${node_wipe:-"n"}
 
+
 # Create or attach to the first session
 tmux has-session -t $SESSION_NAME 2>/dev/null
 if [ $? != 0 ]; then
     tmux new-session -d -s $SESSION_NAME
-    # Split the window into two panes
-    tmux split-window -v -p 30 -t $SESSION_NAME
-    tmux select-pane -t 0    
+
+    # Split the session into two panes
+    tmux split-window -v
+
+    # Resize the first pane to 30% height
+    tmux resize-pane -t "$SESSION_NAME:0.0" -y 30
+    tmux resize-pane -t "$SESSION_NAME:0.1" -y 70
+
+    # Set names for the panes
+    tmux select-pane -t 0 -T "$NODE_PANE"
+    tmux select-pane -t 1 -T "$FARMER_PANE"
+
+    # select pane 2
+    tmux select-pane -t "$SESSION_NAME:0.1"
 fi
 
 echo "Node initial..."
@@ -54,6 +66,21 @@ if [ "$farmer_wipe" == "y" ] || [ "$farmer_wipe" == "Y" ]; then
     tmux send-keys -t $SESSION_NAME:0.1 "./subspace-farmer wipe ./sublog/" C-m
     sleep 60
 fi
+
+#while ! tmux capture-pane -t "$SESSION_NAME:0.0" -p | grep -q "Imported"; do
+#    sleep 1
+#done
+
+$SEARCH_TEXT="Imported"
+# Capture output of the first pane and check for the search text
+output=""
+while [[ $output != *$SEARCH_TEXT* ]]; do
+    output=$(tmux capture-pane -t "$SESSION_NAME:0.0" -p)
+    echo "It seems Node is not synced ... wait 5 sec and try again..."
+    sleep 5
+done
+
+echo "It seems Node is synced success! try to start Farmer!"
 
 # Run a command in the second session's first window
 tmux send-keys -t $SESSION_NAME:0.1 "./subspace-farmer farm --reward-address $reward_address path=./sublog/,size=$plot_size" C-m
