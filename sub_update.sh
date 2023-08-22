@@ -83,4 +83,4 @@ tmux send-keys -t $SESSION_NAME:0.1 "./subspace-farmer farm --reward-address $re
 tmux select-pane -t "$SESSION_NAME:0.1"
 
 # Attach to the session and pane 2
-tmux attach-session -t $SESSION_NAME
+tmux attach-session -t $SESSION_NAME -c $SESSION_NAME:0.1
