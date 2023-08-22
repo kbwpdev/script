@@ -47,9 +47,6 @@ if [ $? != 0 ]; then
     # Set names for the panes
     #tmux select-pane -t 0 -T "$NODE_PANE"
     #tmux select-pane -t 1 -T "$FARMER_PANE"
-
-    # select pane 2
-    tmux select-pane -t "$SESSION_NAME:0.1"
 fi
 
 echo "Node initial..."
@@ -82,5 +79,8 @@ echo "It seems Node is synced success! try to start Farmer!"
 # Run a command in the second session's first window
 tmux send-keys -t $SESSION_NAME:0.1 "./subspace-farmer farm --reward-address $reward_address path=./sublog/,size=$plot_size" C-m
 
+# select pane 2
+tmux select-pane -t "$SESSION_NAME:0.1"
+
 # Attach to the session and pane 2
-tmux attach-session -t $SESSION_NAME -c $SESSION_NAME:0.1
+tmux attach-session -t $SESSION_NAME
