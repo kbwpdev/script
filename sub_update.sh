@@ -54,18 +54,19 @@ echo "Node initial..."
 # Run a command in the first session's first window
 tmux send-keys -t $SESSION_NAME:0.0 "./subspace-node   --chain gemini-3f   --execution wasm   --blocks-pruning 256   --state-pruning archive   --no-private-ipv4   --validator   --name '$node_name'" C-m
 
-echo "Wait to node init..."
-
 if [ "$farmer_wipe" == "y" ] || [ "$farmer_wipe" == "Y" ]; then
+    echo "Wiping farmer ..."
     tmux send-keys -t $SESSION_NAME:0.1 "./subspace-farmer wipe ./sublog/" C-m
-    sleep 60
+    sleep 30
 fi
+
+echo "Wait to node init..."
 
 #while ! tmux capture-pane -t "$SESSION_NAME:0.0" -p | grep -q "Imported"; do
 #    sleep 1
 #done
 
-$SEARCH_TEXT="Imported"
+SEARCH_TEXT="Imported"
 # Capture output of the first pane and check for the search text
 output=""
 while [[ $output != *$SEARCH_TEXT* ]]; do
