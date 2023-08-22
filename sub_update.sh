@@ -45,8 +45,8 @@ if [ $? != 0 ]; then
     tmux resize-pane -t "$SESSION_NAME:0.1" -y 70
 
     # Set names for the panes
-    tmux select-pane -t 0 -T "$NODE_PANE"
-    tmux select-pane -t 1 -T "$FARMER_PANE"
+    #tmux select-pane -t 0 -T "$NODE_PANE"
+    #tmux select-pane -t 1 -T "$FARMER_PANE"
 
     # select pane 2
     tmux select-pane -t "$SESSION_NAME:0.1"
