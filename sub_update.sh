@@ -1,4 +1,8 @@
 #!/bin/bash
+echo "Installing libraries ..."
+sudo apt update && sudo apt-get install jq ocl-icd-opencl-dev ocl-icd-libopencl1 libopencl-clang-dev libgomp1 -y && cd $HOME
+echo "-----------------------------------"
+
 node_name="null"
 plot_size="null"
 setting_file="/root/.config/subspace-cli/settings.toml"
@@ -72,10 +76,6 @@ echo "node_wipe: $node_wipe"
 echo "plot_size: $plot_size"
 echo "node_name: $node_name"
 
-echo "-----------------------------------"
-
-echo "Installing libraries ..."
-sudo apt update && sudo apt-get install jq ocl-icd-opencl-dev ocl-icd-libopencl1 libopencl-clang-dev libgomp1 -y && cd $HOME
 echo "-----------------------------------"
 
 SESSION_NAME="subspace"
